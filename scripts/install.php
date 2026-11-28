@@ -24,6 +24,6 @@ foreach($events as [$title,$genre,$venue,$desc,$art,$days,$price]){
     query('INSERT INTO categories(event_id,name,price,capacity,numbered) VALUES(?,?,?,?,?)',[$id,'General admission',$price,60,0]);
     query('INSERT INTO categories(event_id,name,price,capacity,numbered) VALUES(?,?,?,?,?)',[$id,'Reserved seating',$price+500,20,1]);
 }
-if(file_put_contents(__DIR__.'/../var/local-accounts.txt',implode(PHP_EOL,$accounts))===false) throw new RuntimeException('Could not save local credentials');
+if(file_put_contents(ticketdesk_var_dir().'/local-accounts.txt',implode(PHP_EOL,$accounts))===false) throw new RuntimeException('Could not save local credentials');
 $db->commit();
 require __DIR__.'/sample-events.php';

@@ -65,6 +65,18 @@ Run `vendor\bin\phpunit tests\AccessTest.php` for the permission and form-token 
 - Keep `var` to preserve local records. To transfer existing data, export all `ticketdesk` tables with Workbench, including `event_covers`, and import them on the destination after initial setup. Restored accounts retain their original passwords. Securely retain the original account details because the destination account file initially describes its freshly generated accounts.
 - A fresh Git clone creates new sample data and accounts. Local database files, passwords and generated screenshots are excluded from Git.
 
+## Putting Ticketdesk on a CD
+
+Run `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/prepare-cd.ps1` to assemble a `CD_Package/` folder containing:
+
+- `Ticketdesk/` with source code and bundled `vendor/` dependencies (offline-ready, excluding `var/` and `node_modules/`).
+- `SQL/ticketdesk.sql` exported from the local MySQL instance on port 3318 (if running; otherwise `SQL/schema.sql`).
+- `login-details.txt` listing local operator emails/passwords and registered customer emails.
+- `Video/` as a place to drop your screen recording before burning the CD.
+- `README-CD.txt` with launch instructions.
+
+When `Start Ticketdesk.cmd` is launched directly from a read-only location such as a CD/DVD drive, `scripts/start.ps1` automatically stores runtime database files, logs, and `local-accounts.txt` under `%LOCALAPPDATA%\Ticketdesk\var` (`TICKETDESK_VAR_DIR`).
+
 ## Source layout
 
 - `public/index.php` handles browser routes and participant views.

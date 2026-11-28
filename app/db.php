@@ -1,7 +1,14 @@
 <?php
 declare(strict_types=1);
 date_default_timezone_set('Asia/Colombo');
-$config = json_decode(file_get_contents(__DIR__.'/../var/database.json'), true, flags: JSON_THROW_ON_ERROR);
+function ticketdesk_var_dir(): string {
+    $dir = getenv('TICKETDESK_VAR_DIR');
+    if ($dir === false || $dir === '') {
+        $dir = $_SERVER['TICKETDESK_VAR_DIR'] ?? (__DIR__.'/../var');
+    }
+    return rtrim(str_replace('\\', '/', $dir), '/');
+}
+$config = json_decode(file_get_contents(ticketdesk_var_dir().'/database.json'), true, flags: JSON_THROW_ON_ERROR);
 $db = new PDO('mysql:host=127.0.0.1;port=3318;dbname=ticketdesk;charset=utf8mb4','ticketdesk',$config['password'], [
     PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_ASSOC, PDO::ATTR_EMULATE_PREPARES=>false
 ]);
